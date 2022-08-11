@@ -1,122 +1,92 @@
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/wait.h>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 /**
- * main - get PID and PPID
+ * copy_string - copies a string to a new memory location
+ * @str: input string
  *
- * Return: Always 0.
+ * Return: pointer to new string
  */
 
-extern char **environ;
-int main(void)
+char *copy_string(char *str)
 {
-	pid_t child_pid;
-	pid_t ppid;
-	int status;
-	int i = 0, j, num_tokens = 0;
-	size_t size;
-	char *buffer, *copy, *token, *delim = " \n";
-	char **av;
+	char *copy;
 
-	while (1)
+	copy = malloc(sizeof(char) * strlen(str));
+	if (copy == NULL)
 	{
-		/* PROMPT*/
-		printf(":) ");
-		if ((getline(&buffer, &size, stdin)) == -1)
-		{
-			printf("Exiting shell....\n");
-			free(buffer);
-			exit(0);
-		}
-		/*PROMPT*/
-
-		/*PARSING*/
-		/*create a copy of string*/
-		copy = malloc(sizeof(char) * strlen(buffer));
-		if (copy == NULL)
-		{
-			perror(":( Malloc Failed\n");
-			exit(1);
-		}
-		strcpy(copy, buffer);
-
-		/*get number of tokens*/
-		token = strtok(buffer, delim);
-		while (token)
-		{
-			num_tokens++;
-			token = strtok(NULL, delim);
-		}
-		/*.........................*/
-
-		av = malloc(sizeof(char *)  * num_tokens);
-		if (av == NULL)
-		{
-			perror(":( av: Malloc failed\n");
-			exit(1);
-		}
-
-		/*create 2d array*/
-		token = strtok(copy, delim);
-		for (i = 0; i < num_tokens; i++)
-		{
-			av[i] = malloc(sizeof(char) * strlen(token));
-			if (av[i] == NULL)
-			{
-				for (j = 0; j <= i; j++)
-					free(av[j]);
-				free(av);
-				perror(":( av[i]: malloc failed\n");
-				exit(1);
-			}
-			av[i] = token;
-			token = strtok(NULL, delim);
-		}
-		av[i] = NULL;
-		/*........................*/
-		/*PARSE*/
-
-		/*EXECUTE*/
-		child_pid = fork();
-		if (child_pid == -1)
-		{
-			perror("Error: ");
-			exit(1);
-		}
-		if (av[0] == NULL)
-		{
-			printf(":( No input\n");
-		}
-		else if (child_pid == 0)
-		{
-			if ((execve(av[0], av, environ)) == -1)
-			{
-				perror(":( \n");
-				free(buffer);
-				exit(1);
-			}
-		}
-		wait(&status);
-		printf("After wait?\n");
-		/*free(buffer);*/
-		printf("After free buffer?\n");
+		perror(":( Malloc Failed\n");
 		free(copy);
-		printf("After free copy?\n");
-		for (i = 0; i < num_tokens; i++)
-		{
-			printf("In the loop?\n");
-			free(av[i]);
-		}
-		printf("Maybe outside the loop?\n");
-		free(av);
+		exit(1);
+	}
+	strcpy(copy, buffer);
+	return(copy);
+}
+
+/**
+ * num_tok - returns the number of tokens in a string
+ * @str: input string
+ * @delim: delimiter character
+ *
+ * Return: thenumber of tokens.
+ */
+
+int num_tok(char *str, char *delim)
+{
+	char *token;
+	int num_tokens = 0;
+
+	token = strtok(str, delim);
+	while (token)
+	{
+		num_tokens++;
+		token = strtok(NULL, delim);
+	}
+	return(num_tokens);
+}
+
+/**
+ * create_array - creates an array of pointers to tokens
+ * @str: input string
+ * @delim: delimiter
+ * @height: address of an int that holds the arrays height
+ * @width: address of an int that holds the arrays width
+ *
+ * Return: a 2d array of pointers to strings
+ */
+
+char **create_array(char *str, char *delim, int *height, int *width)
+{
+	char **arr;
+	char *token;
+	int size, i, j;
+
+	size = num_tok(str, delim);
+	arr = malloc(sizeof(char *)  * size);
+
+	if (arr == NULL)
+	{
+		perror(":( arr: Malloc failed\n");
+		free(arr);
+		exit(1);
 	}
 
-	return (0);
+	/*create 2d array*/
+
+	token = strtok(copy, delim);
+	for (i = 0; i < size; i++)
+	{
+		arr[i] = malloc(sizeof(char) * strlen(token));
+		if (arr[i] == NULL)
+		{
+			for (j = 0; j <= i; j++)
+				free(arr[j]);
+			free(arr);
+			perror(":( arr[i]: malloc failed\n");
+			exit(1);
+		}
+		arr[i] = token;
+		token = strtok(NULL, delim);
+	}
+	av[i] = NULL;
+	width = &i;
+	height = &size;
+	return (arr);
 }

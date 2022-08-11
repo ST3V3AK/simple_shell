@@ -20,7 +20,7 @@ int main(void)
 	pid_t child_pid;
 	pid_t ppid;
 	int status;
-	int i = 0, num_tokens = 0;
+	int i = 0, j, num_tokens = 0;
 	size_t size;
 	char *buffer, *copy, *token, *delim = " \n";
 	char **av;
@@ -40,7 +40,11 @@ int main(void)
 		/*PARSING*/
 		/*create a copy of string*/
 		copy = malloc(sizeof(char) * strlen(buffer));
-		if (
+		if (copy == NULL)
+		{
+			perror(":( Malloc Failed\n");
+			exit(1);
+		}
 		strcpy(copy, buffer);
 
 		/*get number of tokens*/
@@ -53,12 +57,25 @@ int main(void)
 		/*.........................*/
 
 		av = malloc(sizeof(char *)  * num_tokens);
+		if (av == NULL)
+		{
+			perror(":( av: Malloc failed\n");
+			exit(1);
+		}
 
 		/*create 2d array*/
 		token = strtok(copy, delim);
 		for (i = 0; i < num_tokens; i++)
 		{
 			av[i] = malloc(sizeof(char) * strlen(token));
+			if (av[i] == NULL)
+			{
+				for (j = 0; j <= i; j++)
+					free(av[j]);
+				free(av);
+				perror(":( av[i]: malloc failed\n");
+				exit(1);
+			}
 			av[i] = token;
 			token = strtok(NULL, delim);
 		}
@@ -88,7 +105,7 @@ int main(void)
 		}
 		wait(&status);
 		printf("After wait?\n");
-		free(buffer);
+		/*free(buffer);*/
 		printf("After free buffer?\n");
 		free(copy);
 		printf("After free copy?\n");
