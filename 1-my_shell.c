@@ -20,64 +20,86 @@ int main(void)
 	pid_t child_pid;
 	pid_t ppid;
 	int status;
-	int i = 0, j, num_tokens = 0;
+	int i = 0, num_tokens = 0;
 	size_t size;
 	char *buffer, *copy, *token, *delim = " \n";
 	char **av;
 
-	printf(":) ");
-	j = getline(&buffer, &size, stdin);
-
-	/*create a copy of string*/
-	copy = malloc(sizeof(char) * strlen(buffer));
-	printf("After malloc\n");
-	strcpy(copy, buffer);
-
-	/*create sting of tokens*/
-	token = strtok(buffer, delim);
-	while (token)
+	while (1)
 	{
-		num_tokens++;
-		token = strtok(NULL, delim);
-	}
-	
-	av = malloc(sizeof(char *)  * num_tokens);
+		/* PROMPT*/
+		printf(":) ");
+		if ((getline(&buffer, &size, stdin)) == -1)
+		{
+			printf("Exiting shell....\n");
+			free(buffer);
+			exit(0);
+		}
+		/*PROMPT*/
 
-	token = strtok(copy, delim);
-	for (i = 0; i < num_tokens; i++)
-	{
-		av[i] = malloc(sizeof(char) * strlen(token));
-		av[i] = token;
-		token = strtok(NULL, delim);
-	}
-	av[i] = NULL;
+		/*PARSING*/
+		/*create a copy of string*/
+		copy = malloc(sizeof(char) * strlen(buffer));
+		if (
+		strcpy(copy, buffer);
 
-	while (j >= 0)
-	{
+		/*get number of tokens*/
+		token = strtok(buffer, delim);
+		while (token)
+		{
+			num_tokens++;
+			token = strtok(NULL, delim);
+		}
+		/*.........................*/
+
+		av = malloc(sizeof(char *)  * num_tokens);
+
+		/*create 2d array*/
+		token = strtok(copy, delim);
+		for (i = 0; i < num_tokens; i++)
+		{
+			av[i] = malloc(sizeof(char) * strlen(token));
+			av[i] = token;
+			token = strtok(NULL, delim);
+		}
+		av[i] = NULL;
+		/*........................*/
+		/*PARSE*/
+
+		/*EXECUTE*/
 		child_pid = fork();
 		if (child_pid == -1)
 		{
 			perror("Error: ");
-			return (-1);
+			exit(1);
+		}
+		if (av[0] == NULL)
+		{
+			printf(":( No input\n");
 		}
 		else if (child_pid == 0)
 		{
-			execve(av[0], av, environ);
-			perror(":( \n");
-			continue;
+			if ((execve(av[0], av, environ)) == -1)
+			{
+				perror(":( \n");
+				free(buffer);
+				exit(1);
+			}
 		}
-		else
+		wait(&status);
+		printf("After wait?\n");
+		free(buffer);
+		printf("After free buffer?\n");
+		free(copy);
+		printf("After free copy?\n");
+		for (i = 0; i < num_tokens; i++)
 		{
-			wait(&status);
-			printf(":) ");
-			j = getline(&buffer, &size, stdin);
-			continue;
+			printf("In the loop?\n");
+			free(av[i]);
 		}
+		printf("Maybe outside the loop?\n");
+		free(av);
 	}
-	printf("Exiting shell....\n");
-	
-	for (i = 0; i < num_tokens; i++)
-		free(av[i]);
-	free(av);
+
 	return (0);
 }
