@@ -1,33 +1,24 @@
 #include "main.h"
-
-
+/**
+ * main - Task 0.1
+ * Return: Nothing
+ */
 int main(void)
 {
-	char *token __attribute__((unused));
-	char *delim;
-	char *tmp __attribute__((unused));
-	int number_of_tokens __attribute__((unused));
-	size_t len_tokens;
-	char *buf;
-	size_t bufsize;
-	ssize_t read_chars __attribute__((unused));
-	char *copy_buf __attribute__((unused));
-	char *prompt __attribute__((unused));
-	char **cmdl __attribute__((unused));
-	int i;
-	int status;
+	char *prompt, *token, *delim, *tmp, *buf, *copy_buf, **cmdl;
+	size_t len_tokens, bufsize, read_chars;
+	int i, status, number_of_tokens;
 
 	delim = "\n ";
 	prompt = "#cisfun$ ";
 	printf("%s", prompt);
-	while((read_chars = getline(&buf, &bufsize, stdin)) != -1)
+	while ((read_chars = getline(&buf, &bufsize, stdin)) != -1)
 	{
 		copy_buf = malloc(sizeof(char) * strlen(buf));
 		strcpy(copy_buf, buf);
 		len_tokens = tokenslen(copy_buf, delim);
 		number_of_tokens = tokens_in_string(copy_buf, delim);
 		free(copy_buf);
-
 		cmdl = malloc(sizeof(char *) * (len_tokens + 1));
 		copy_buf = malloc(sizeof(char) * strlen(buf));
 		strcpy(copy_buf, buf);
@@ -40,7 +31,6 @@ int main(void)
 		}
 		cmdl[i] = NULL;
 		free(copy_buf);
-
 		if (fork() == 0)
 		{
 			if (i == 1)
@@ -54,84 +44,5 @@ int main(void)
 		wait(&status);
 		printf("%s", prompt);
 	}
-
 	return (0);
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
