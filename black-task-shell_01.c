@@ -31,7 +31,6 @@ int main(void)
 			token = strtok(NULL, delim);
 		}
 		cmdl[i] = NULL;
-
 		if (fork() == 0)
 		{
 			if (i == 1)
