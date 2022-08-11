@@ -60,7 +60,7 @@ int main(void)
 			perror("Error: ");
 			return (-1);
 		}
-		if (child_pid == 0)
+		else if (child_pid == 0)
 		{
 			execve(av[0], av, environ);
 			perror(":( \n");
