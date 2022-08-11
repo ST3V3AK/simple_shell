@@ -5,8 +5,9 @@
  */
 int main(void)
 {
-	char *prompt, *token, *delim, *tmp, *buf, *copy_buf, **cmdl;
-	size_t len_tokens, bufsize, read_chars;
+	char *prompt, *token, *delim, *buf, *copy_buf, **cmdl;
+	size_t len_tokens, bufsize;
+	ssize_t read_chars;
 	int i, status, number_of_tokens;
 
 	delim = "\n ";
@@ -30,12 +31,12 @@ int main(void)
 			token = strtok(NULL, delim);
 		}
 		cmdl[i] = NULL;
-		free(copy_buf);
+
 		if (fork() == 0)
 		{
 			if (i == 1)
 			{
-				execve(cmdl[0], cmdl, NULL);
+				execve(cmdl[0], cmdl, environ);
 				perror("./shell");
 			}
 			else
