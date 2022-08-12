@@ -1,3 +1,6 @@
+#include "simple_shell.h"
+
+
 /**
  * prompt - prints an input string on the terminal
  * @message: message
@@ -22,27 +25,31 @@ void prompt(char *message)
  * Return: void.
  */
 
+void execute(char *av[])
+{
+	int child_pid;
+	int status;
 
-		child_pid = fork();
-		if (child_pid == -1)
+	if (av[0] == NULL)
+	{
+		perror(":( No input\n");
+		return;
+	}
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("Fork err: ");
+		exit(1);
+	}
+	if (child_pid == 0)
+	{
+		if ((execve(av[0], av, environ)) == -1)
 		{
-			perror("Error: ");
+			perror(":( \n");
 			exit(1);
 		}
-		if (av[0] == NULL)
-		{
-			printf(":( No input\n");
-		}
-		else if (child_pid == 0)
-		{
-			if ((execve(av[0], av, environ)) == -1)
-			{
-				perror(":( \n");
-				free(buffer);
-				exit(1);
-			}
-		}
-		wait(&status);
-		printf("After wait?\n");
-	return (0);
+	}
+	wait(&status);
+	printf("After wait? %d %d\n", child_pid, status);
 }

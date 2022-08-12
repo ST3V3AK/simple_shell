@@ -1,3 +1,6 @@
+#include "simple_shell.h"
+
+
 /**
  * copy_string - copies a string to a new memory location
  * @str: input string
@@ -14,7 +17,7 @@ char *copy_string(char *str)
 	{
 		perror(":( Malloc Failed\n");
 		free(copy);
-		exit(1);
+		return (NULL);;
 	}
 	strcpy(copy, buffer);
 	return(copy);
@@ -52,7 +55,7 @@ int num_tok(char *str, char *delim)
  * Return: a 2d array of pointers to strings
  */
 
-char **create_array(char *str, char *delim, int *height, int *width)
+char **create_array(char *str, char *delim, int *height)
 {
 	char **arr;
 	char *token;
@@ -65,12 +68,12 @@ char **create_array(char *str, char *delim, int *height, int *width)
 	{
 		perror(":( arr: Malloc failed\n");
 		free(arr);
-		exit(1);
+		return (NULL);
 	}
 
 	/*create 2d array*/
 
-	token = strtok(copy, delim);
+	token = strtok(str, delim);
 	for (i = 0; i < size; i++)
 	{
 		arr[i] = malloc(sizeof(char) * strlen(token));
@@ -80,13 +83,12 @@ char **create_array(char *str, char *delim, int *height, int *width)
 				free(arr[j]);
 			free(arr);
 			perror(":( arr[i]: malloc failed\n");
-			exit(1);
+			return (NULL);
 		}
 		arr[i] = token;
 		token = strtok(NULL, delim);
 	}
 	av[i] = NULL;
-	width = &i;
 	height = &size;
 	return (arr);
 }
