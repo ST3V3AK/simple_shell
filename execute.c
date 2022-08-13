@@ -43,11 +43,6 @@ void execute(char *av[])
 	}
 	if (child_pid == 0)
 	{
-		if (av[1] != NULL)
-		{
-			write(STDERR_FILENO, ERR_MSG, 30);
-			exit(1);
-		}
 		if ((execve(av[0], av, environ)) == -1)
 		{
 			write(STDERR_FILENO, ERR_MSG, 30);
