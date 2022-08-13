@@ -8,7 +8,7 @@
 
 int main(void)
 {
-	char /*welcome*/ *msg, *exit_msg;
+	char /*welcome*/ * msg, *exit_msg;
 	char *buffer = NULL, *copy, *s;
 	char **argv, *delim = " \n";
 	size_t size;
@@ -16,26 +16,25 @@ int main(void)
 	int status;
 
 	/*welcome = "Starting shell....\n";*/
-	s = "exit";
+	s = "\n";
 	exit_msg = "Exiting shell.....\n";
 	msg = "#cisfun$ ";
 
-	/*prompt(welcome);*/
 	check_mode(&status);
 	while (1)
 	{
-		/*Get commands*/
 		prompt(msg);
 		read_chars = getline(&buffer, &size, stdin);
-		if (read_chars == -1 || (_strcmp(buffer, s)) == 0)
+		if (read_chars == -1)
 		{
 			prompt(exit_msg);
 			exit(1);
 		}
+		if  ((_strcmp(buffer, s)) == 0)
+			continue;
 
 		copy = copy_string(buffer);
 		/*n_tok = num_tok(copy);*/
-		/*free(copy);*/
 		copy = copy_string(buffer);
 		argv = create_array(copy, delim);
 		execute(argv);
