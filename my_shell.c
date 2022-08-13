@@ -9,13 +9,14 @@
 int main(void)
 {
 	char /*welcome*/ *msg, *exit_msg;
-	char *buffer = NULL, *copy;
+	char *buffer = NULL, *copy, *s;
 	char **argv, *delim = " \n";
 	size_t size;
 	int read_chars; /*n_tok = 0*/
 	int status;
 
 	/*welcome = "Starting shell....\n";*/
+	s = "exit";
 	exit_msg = "Exiting shell.....\n";
 	msg = "#cisfun$ ";
 
@@ -26,7 +27,7 @@ int main(void)
 		/*Get commands*/
 		prompt(msg);
 		read_chars = getline(&buffer, &size, stdin);
-		if (read_chars == -1)
+		if (read_chars == -1 || (_strcmp(buffer, s)) == 0)
 		{
 			prompt(exit_msg);
 			exit(1);
