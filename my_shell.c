@@ -8,18 +8,18 @@
 
 int main(void)
 {
-	char *welcome, *msg, *exit_msg;
+	char /*welcome*/ *msg, *exit_msg;
 	char *buffer = NULL, *copy;
 	char **argv, *delim = " \n";
 	size_t size;
 	int read_chars; /*n_tok = 0*/
 	int status;
 
-	welcome = "Starting shell....\n";
-	exit_msg = "\nExiting shell.....\n";
-	msg = ":) ";
+	/*welcome = "Starting shell....\n";*/
+	exit_msg = "Exiting shell.....\n";
+	msg = "#cisfun$ ";
 
-	prompt(welcome);
+	/*prompt(welcome);*/
 	check_mode(&status);
 	while (1)
 	{
