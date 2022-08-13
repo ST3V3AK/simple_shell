@@ -14,8 +14,7 @@ void prompt(char *message)
 	int n = strlen(message);
 
 	for (i = 0; i < n; i++)
-		putchar(msg[i]);
-	putchar(' ');
+		putchar(message[i]);
 }
 
 /**
@@ -44,12 +43,16 @@ void execute(char *av[])
 	}
 	if (child_pid == 0)
 	{
+		if (av[1] != NULL)
+		{
+			write(STDERR_FILENO, ERR_MSG, 30);
+			exit(1);
+		}
 		if ((execve(av[0], av, environ)) == -1)
 		{
-			perror(":( \n");
+			write(STDERR_FILENO, ERR_MSG, 30);
 			exit(1);
 		}
 	}
 	wait(&status);
-	printf("After wait? %d %d\n", child_pid, status);
 }

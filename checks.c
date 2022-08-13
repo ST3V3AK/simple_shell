@@ -10,10 +10,10 @@
 
 void check_mode(int *status)
 {
-	if ((isatty()) == 1)
-		status = 1;
+	if ((isatty(STDIN_FILENO)) == 1)
+		*status = 1;
 	else
-		status = 0;
+		*status = 0;
 }
 
 /**
@@ -26,9 +26,13 @@ void check_mode(int *status)
 
 void free_grid(char **grid, int height)
 {
-	int i;
+	int i = 0;
 
-	for (i = 0; i <= height; i++)
-		free(grid[i]);
+	while (i < height)
+	{
+		if (grid[i] != NULL)
+			free(grid[i]);
+		i++;
+	}
 	free(grid);
 }
