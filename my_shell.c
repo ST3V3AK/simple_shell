@@ -8,19 +8,19 @@
 
 int main(void)
 {
-	char *welcome, *msg, *err_msg;
+	char *welcome, *msg, *exit_msg;
 	char *buffer = NULL, *copy;
 	char **argv, *delim = " \n";
 	size_t size;
-	int read_chars, n_tok;
-	int height, status, mode;
+	int read_chars; /*n_tok = 0*/
+	int status;
 
-	welcome = "Starting shell....";
+	welcome = "Starting shell....\n";
+	exit_msg = "\nExiting shell.....\n";
 	msg = ":) ";
-	err_msg = ":( ";
 
 	prompt(welcome);
-	check_mode(&mode);
+	check_mode(&status);
 	while (1)
 	{
 		/*Get commands*/
@@ -28,19 +28,22 @@ int main(void)
 		read_chars = getline(&buffer, &size, stdin);
 		if (read_chars == -1)
 		{
-			perror(err_msg);
+			prompt(exit_msg);
 			exit(1);
 		}
 
 		copy = copy_string(buffer);
-		n_tok = num_tok(copy, delim);
-		free(copy);
+		/*n_tok = num_tok(copy);*/
+		/*free(copy);*/
 		copy = copy_string(buffer);
-		argv = create_array(copy, delim, &height);
+		argv = create_array(copy, delim);
 		execute(argv);
-		free_grid(argv, height);
-		if (mode == 0)
+		/*free_grid(argv, n_tok);*/
+		if (status == 0)
+		{
+			free(copy);
 			exit(0);
+		}
 	}
 	return (0);
 }
