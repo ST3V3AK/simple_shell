@@ -23,6 +23,7 @@ void free_grid(char **grid, int height);
 int _strlen(char *s);
 int _putchar(char c);
 char *_strcpy(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
 
 #define ERR_MSG ":( No such file or directory\n"
 #endif
