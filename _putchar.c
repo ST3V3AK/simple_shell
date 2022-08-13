@@ -4,11 +4,10 @@
  * _putchar - prints a character
  * @c: input character
  *
- * Return: void
+ * Return: 0 for success and others for failure
  */
 
-void _putchar(char c)
+int _putchar(char c)
 {
-        if (c != NULL)
-                write(STDIN_FILENO, c, 1);
+	return(write(STDIN_FILENO, &c, 1));
 }
