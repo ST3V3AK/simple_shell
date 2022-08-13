@@ -20,7 +20,7 @@ char *copy_string(char *str)
 		exit(1);
 	}
 	_strcpy(copy, str);
-	return(copy);
+	return (copy);
 }
 
 /**
@@ -32,8 +32,8 @@ char *copy_string(char *str)
 
 int num_tok(char *str)
 {
-	char* delim = " ";
-	int i= 0;
+	char *delim = " ";
+	int i = 0;
 	int num_tokens = 0;
 
 	while (str[i])
@@ -42,14 +42,13 @@ int num_tok(char *str)
 			num_tokens++;
 		i++;
 	}
-	return(num_tokens + 1);
+	return (num_tokens + 1);
 }
 
 /**
  * create_array - creates an array of pointers to tokens
  * @str: input string
  * @delim: delimiter
- * @height: address of an int that holds the arrays height
  *
  * Return: a 2d array of pointers to strings
  */
