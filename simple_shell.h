@@ -20,6 +20,9 @@ int num_tok(char *str);
 char **create_array(char *str, char *delim);
 void execute(char *av[]);
 void free_grid(char **grid, int height);
+int _strlen(char *s);
+int _putchar(char c);
+char *_strcpy(char *dest, char *src);
 
 #define ERR_MSG ":( No such file or directory\n"
 #endif

@@ -14,7 +14,7 @@ void prompt(char *message)
 	int n = strlen(message);
 
 	for (i = 0; i < n; i++)
-		putchar(message[i]);
+		_putchar(message[i]);
 }
 
 /**

@@ -19,7 +19,7 @@ char *copy_string(char *str)
 		free(copy);
 		exit(1);
 	}
-	strcpy(copy, str);
+	_strcpy(copy, str);
 	return(copy);
 }
 
@@ -73,7 +73,7 @@ char **create_array(char *str, char *delim)
 	token = strtok(str, delim);
 	for (i = 0; i < size; i++)
 	{
-		arr[i] = malloc(sizeof(char) * strlen(token));
+		arr[i] = malloc(sizeof(char) * _strlen(token));
 		if (arr[i] == NULL)
 		{
 			free_grid(arr, i);
